@@ -1,0 +1,22 @@
+#!/bin/csh
+
+# get RCHL.2A_CS.vol radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir RCHL/Volume/2A_CS.vol \
+    --localDirBase $DATA_DIR/raw/radar/rchl.2A_CS.vol \
+    --fileSuffix vol \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600
+
+cd /home/disk/monsoon/precip/raw/radar
+rsync -av rchl.2A_CS.vol srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar

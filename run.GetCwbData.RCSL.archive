@@ -1,0 +1,22 @@
+#!/bin/csh
+
+# get RCSL radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir RCSL/Volume/5A_S3.vol \
+    --localDirBase $DATA_DIR/raw/radar/rcsl \
+    --fileSuffix vol \
+    --start "2022 06 11 00 00 00" \
+    --end "2022 06 12 00 00 00" \
+    --lookbackSecs 3600
+
+#cd /home/disk/monsoon/precip/raw/radar/rcsl
+#rsync -av 20220525 srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar/rcsl

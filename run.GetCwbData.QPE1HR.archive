@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get QPE1HR radar data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir QPE1HR \
+    --localDirBase $DATA_DIR/raw/radar/qpe_1hr \
+    --fileSuffix gz \
+    --start "2022 06 10 00 00 00" \
+    --end "2022 06 15 00 00 00" \
+    --sleepSecs 60
+
+#cd /home/disk/monsoon/precip/raw/radar
+#rsync -av qpe_1hr srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar

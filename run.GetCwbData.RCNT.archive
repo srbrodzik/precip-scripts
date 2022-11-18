@@ -1,0 +1,23 @@
+#!/bin/csh
+
+# get RCNT radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir RCNT/Volume/5A_S3.vol \
+    --localDirBase $DATA_DIR/raw/radar/rcnt \
+    --fileSuffix vol \
+    --start "2022 06 11 00 00 00" \
+    --end "2022 06 12 00 00 00" \
+    --sleepSecs 60
+
+#cd /home/disk/monsoon/precip/raw/radar/rcnt
+#rsync -av 20220525 srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar/rcnt
+

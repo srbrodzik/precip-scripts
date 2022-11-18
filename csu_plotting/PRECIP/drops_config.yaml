@@ -1,0 +1,173 @@
+
+#raw_data_path: /data4/spurs2/raw_radar_data/spurs2
+#base_path: /home/rmet/SPURS2/realtime_radar
+#drops_config_file: /data4/brfuchs/drops/radar_seapol_raw.conf
+##drops_config_file: /data4/brfuchs/drops/radar_cpol.conf
+
+raw_data_path: /data4/piston/
+base_path: /data3/bdolan/PISTON_QC/
+drops_config_file: /data3/bdolan/PISTON_QC/radar_seapol_raw.conf
+fig_path: /net/longs/data3/bdolan/PISTON_QC/figures
+qc_flag: True
+unfold_flag: True
+remove_jack_flag: True
+
+fix_zdr_flag: True
+
+qc_remove_fields: ['DZQCSMOOTH', 'SQISMOOTH', 'WIDTHSMOOTH', 'STF', 'DZQCI', 'DBT2','UNKNOWN_82','SDP','FDP']
+
+second_trip_flag: True
+plot_second_trip: True
+plot_raw: True
+path1: raw_radar_data
+ftype1: ''
+
+raw_ftype: ''
+prefix1: SEA
+
+
+# this is a switch if you want to output gridded/processed data to a netcdf file (1 yes, 0 no)
+# this code is run at the end of process_gridded_radar.py. Did it this way because all of the 
+# requisite info is already calculated in this script
+output_nc: 1
+# Where do you want to put the output netcdf files?
+nc_path: /net/longs/data3/bdolan/PISTON_QC/qc_processed/
+# The variables (or fields) you want to output
+nc_fields: ['CZ','CR','RH','CV','KD', 'WI','rainfall','method','lat','lon','HID','CS']
+# this just goes in front of the filename for organizational/documentation purposes
+nc_prefix: 'SEA'
+
+
+# file gets put thru qc_radar.py and output into path2
+path2: qc_cfradial
+qc_data_path: qc_cfradial
+qc_ftype: .nc
+ftype2: .nc
+prefix2: SEA
+qc_prefix: SEA
+
+rhi_range_correction: True
+
+drops_data_path: qc_drops
+drops_ftype: .nc
+drops_prefix: SEA
+
+
+# With DROPS, have to do something special, have to convert realtime_cfradial file using RadxConvert
+# then run DROPS, then convert that file to netcdf with RadxConvert again
+pathtmp: qc_drops
+ftypetmp: ''
+prefixtmp: ''
+# So in here is a temporary directory where the files will be manipulated
+
+path3: mirai_gridded
+ftype3: .nc
+prefix3: SEAPOL_grid_
+
+grid_data_path: mirai_gridded
+grid_ftype: .nc
+grid_prefix: SEAPOL_grid_
+
+rain_data_path: rainfall_arrays
+rain_ftype: .npz
+rain_prefix : ''
+
+
+path4: qc_processed
+ftype4: .nc
+
+# Number of sweeps needed in a PPI scan to be considered valid
+nsweeps_thresh: 3
+
+orig_phase_name: PHIDP2
+qc_phase_name: PHIDP2
+phase_name: PF
+
+
+orig_vel_name: VEL2
+qc_vel_name: VEL2
+vel_name: CV
+
+orig_sq_name: SQI2
+qc_sq_name: SQI2
+sq_name: SQ
+
+# Reflectivity, in DROPS, will undergo a first QC with python, then a final QC with DROPS
+# so it'll have to have 3 different names
+# This is the name in the raw data file
+orig_dz_name: DBZ2
+# Here is the Pyart QC'ed reflectivity name
+qc_dz_name: DZQC
+# Here is the DROPS QC'ed name
+drops_qc_dz_name: CZ
+# Here is the final reflectivity name
+dz_name: DZ
+#here is the name to use in the post processing.
+dz_process_name: CZ
+
+orig_zdr_name: ZDR2
+qc_zdr_name: ZDR
+zdr_name: CR
+
+orig_kdp_name: KDP2
+qc_kdp_name: KDP
+kdp_name: KD
+
+orig_rho_name: RHOHV2
+qc_rho_name: RH
+rho_name: RH
+
+orig_sn_name: SNR16
+qc_sn_name: SN
+sn_name: SN
+
+orig_width_name: WIDTH2
+qc_width_name: WI
+width_name: WI
+
+rain_beam_method: level
+rainmethod: csutropical
+cs_z_val: 2.0
+
+sdp_thresh: 13
+despeckle_gates: 4
+sq_thresh: 0.35
+rho_thresh: 0.8
+sn_thresh: 5.7
+
+lat_width: 2.25
+lon_width: 2.5
+
+lat_width_zoom: 1.0
+lon_width_zoom: 1.0
+
+map_limits:
+  lat: [17.5, 26.0]
+  lon: [-123.0, -116.0]
+
+map_res: 1.0
+
+z_val: 2.0
+z_bot: 0.5
+z_top: 3.0
+
+radar_band: 'C'
+
+saved_data_path: saved_data
+default_dtime: 5.0
+accum_lag_thresh: 20.0
+
+rain_search_range: 5.0
+rain_search_thresh: 5.0
+
+accum_search_range: 5.0
+accum_search_thresh: 5.0
+
+rainfall_age_thresh: 480.0
+save_data_thresh: 12
+
+rain_method: all # can be either slant, composite, all
+
+DPI: 120
+largeDPI: 200
+velocity_max: 20

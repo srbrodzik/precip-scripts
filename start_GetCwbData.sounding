@@ -1,0 +1,24 @@
+#!/bin/csh
+
+# get the sounding data
+
+setenv PROJ_DIR /home/disk/monsoon/precip
+setenv DATA_DIR $PROJ_DIR
+setenv ERRORS_LOG_DIR $PROJ_DIR/logs/errors
+
+cd $PROJ_DIR/ingest/scripts
+
+running "GetCwbData.py3 --instance sounding"
+
+if ($status == 1) then
+  GetCwbData.py3 --instance sounding \
+    --debug \
+    --platform SOUNDING \
+    --localDirBase $DATA_DIR/$project/raw/sounding \
+    --fileSuffix txt \
+    --realtime \
+    --lookbackSecs 3600 \
+    --sleepSecs 60 \
+      |& LogFilter -d $ERRORS_LOG_DIR -p GetCwbData.py -i sounding \
+      >& /dev/null &
+endif

@@ -1,0 +1,19 @@
+#!/bin/csh
+
+# get the lightning data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform LIGHTNING \
+    --localDirBase $DATA_DIR/raw/lightning \
+    --fileSuffix lit \
+    --lookbackSecs 3600 \
+    --start "2022 05 25 00 00 00" \
+    --end "2022 06 11 00 00 00" \
+    --sleepSecs 60 

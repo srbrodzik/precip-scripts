@@ -1,0 +1,21 @@
+#!/bin/csh
+
+# get the lightning data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform LIGHTNING \
+    --localDirBase $DATA_DIR/raw/lightning \
+    --fileSuffix lit \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600 
+
+cd /home/disk/monsoon/precip/raw
+rsync -av lightning srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw

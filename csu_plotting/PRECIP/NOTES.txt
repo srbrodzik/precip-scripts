@@ -1,0 +1,41 @@
+#######################################################################
+##These are notes about the processing software for the SEA-POL Radar.
+## A.K.A. "Brody's Code"
+## Brenda Dolan, May 2022
+## This is derived from the code written by Brody Fuchs, 2017 (modified in 2018)
+#######################################################################
+
+
+########General notes#######################
+##Current version works in python 2
+##There are 
+##SkewT is particularly finicky. The version in this directory should work with this version of the code.
+##Basemap is required in order to tun on the map_flag
+
+
+########SETUP###############
+## Make sure to setup the yaml file for your radar and products and desired directories
+##Variable names and directories and various qc thresholds are defined in pyart_config_laptop.yaml
+
+##while the script creates certain directories, it also expects some to already be there.
+Make sure these directories are already established (where $ indicates the name comes from the yaml file)
+$fig_path
+$radar_stats (although this will not cause the whole program to fail if it doesn't find it)
+$qc_data_path/ppi
+$qc_data_path/rhi (here make sure the qc_data_path from the yaml is created with the ppi and rhi subdirectories)
+#grid_data_path
+
+
+########Running in Realtime##############
+python pyart_driver.py  --config pyart_config_laptop.yaml --start 20180824_000000 --end 20180825_000000
+
+
+##To run for a specific file, the --start and --end flags must be used, with the times in yyyymmdd_hhmmss format:
+## As an example:
+
+python pyart_driver.py  --config pyart_config_laptop.yaml --start 20180824_000000 --end 20180825_000000
+
+#########Gridding#######
+# Make sure the RadxGrid location is correct in batch_radx_seapol.py
+# Also make sure the desired configuration file for batch_radx_seapol.py is correct in the program.
+

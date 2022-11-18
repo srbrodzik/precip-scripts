@@ -1,0 +1,1 @@
+/home/disk/monsoon/precip/git/lrose-precip/projDir/ingest/scripts/GetAwsHimawari.py3

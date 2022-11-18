@@ -1,0 +1,23 @@
+#!/bin/csh
+
+# get RCLY radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir RCLY/Volume/5A_S3.vol \
+    --localDirBase $DATA_DIR/raw/radar/rcly \
+    --fileSuffix vol \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600 
+
+cd /home/disk/monsoon/precip/raw/radar
+rsync -av rcly srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar
+

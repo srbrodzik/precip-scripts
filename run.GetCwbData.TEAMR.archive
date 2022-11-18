@@ -1,0 +1,23 @@
+#!/bin/csh
+
+# get TEAMR radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir TEAMR \
+    --localDirBase $DATA_DIR/raw/radar/TEAMR \
+    --fileSuffix gz \
+    --start "2022 06 07 00 00 00" \
+    --end "2022 06 16 03 30 00" \
+    --sleepSecs 60 
+
+#cd /home/disk/monsoon/precip/raw/radar
+#rsync -av TEAMR srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar
+

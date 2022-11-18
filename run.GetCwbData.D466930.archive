@@ -1,0 +1,15 @@
+#!/bin/csh
+
+# get distrometer 466930 data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+GetCwbData.py3 \
+    --verbose \
+    --platform DISTRO \
+    --ftpSubDir 466930 \
+    --localDirBase $DATA_DIR/raw/distro/466930 \
+    --fileSuffix '' \
+    --start "2022 05 25 00 00 00" \
+    --end "2022 06 21 00 00 00" \
+    --sleepSecs 60

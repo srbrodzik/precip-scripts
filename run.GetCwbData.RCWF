@@ -1,0 +1,22 @@
+#!/bin/csh
+
+# get RCWF radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir RCWF \
+    --localDirBase $DATA_DIR/raw/radar/rcwf \
+    --fileSuffix gz \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 7200 
+
+cd /home/disk/monsoon/precip/raw/radar
+rsync -av rcwf srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar

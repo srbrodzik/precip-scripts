@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get distrometer 467770 data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform DISTRO \
+    --ftpSubDir 467770 \
+    --localDirBase $DATA_DIR/raw/distro/467770 \
+    --fileSuffix ''\
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600
+
+cd /home/disk/monsoon/precip/raw/distro
+rsync -av 467770 srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/distro

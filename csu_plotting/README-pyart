@@ -1,0 +1,41 @@
+PROBLEM:
+ImportError Traceback (most recent call last)
+in ()
+----> 1 import pyart
+
+/usr/local/lib/python2.7/dist-packages/pyart/init.py in ()
+45 # import subpackages
+46 from . import core
+---> 47 from . import io
+48 from . import correct
+49 from . import graph
+
+/usr/local/lib/python2.7/dist-packages/pyart/io/init.py in ()
+79 from .rsl import read_rsl
+80 from .mdv_radar import read_mdv
+---> 81 from .sigmet import read_sigmet
+82 from .chl import read_chl
+83 from .cfradial import read_cfradial, write_cfradial
+
+/usr/local/lib/python2.7/dist-packages/pyart/io/sigmet.py in ()
+28 from ..core.radar import Radar
+29 from .common import make_time_unit_str, _test_arguments, prepare_for_read
+---> 30 from ._sigmetfile import SigmetFile, bin4_to_angle, bin2_to_angle
+31 from . import _sigmet_noaa_hh
+32 from ..util import mean_of_two_angles_deg
+
+ImportError: /usr/local/lib/python2.7/dist-packages/pyart/io/_sigmetfile.so: undefined symbol: PyFPE_jbuf
+
+RESPONSE FROM https://github.com/ARM-DOE/pyart/discussions/1163
+Thanks for the question @srbrodzik - Py-ART does not support Python 2, as indicated in the changelogs (https://arm-doe.github.io/pyart/changelog.html#pyart-v1-11-0).
+
+ANOTHER RESPONSE
+One other option would be to install a previous version of Py-ART, for example:
+
+pip install arm-pyart==1.9.0
+
+or
+
+pip install arm-pyart==1.10.1
+
+

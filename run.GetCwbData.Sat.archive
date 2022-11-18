@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get satellite data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform SAT \
+    --localDirBase $DATA_DIR/raw/satellite/himawari_cwb \
+    --fileSuffix gz \
+    --start "2022 05 25 00 00 00" \
+    --end "2022 06 18 00 00 00" \
+    --sleepSecs 60
+
+#cd /home/disk/monsoon/precip/raw/satellite
+#rsync -av himawari_CWB srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/satellite
+

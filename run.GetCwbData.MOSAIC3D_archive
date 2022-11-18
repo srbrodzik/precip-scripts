@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get 3D Mosaic radar data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+#running "GetCwbData.py3"
+
+./GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir MOSAIC3D \
+    --localDirBase $DATA_DIR/raw/radar/Mosaic_3D \
+    --fileSuffix gz \
+    --start "2022 06 03 00 00 00" \
+    --end "2022 06 07 00 00 00"  \ 
+    --sleepSecs 60
+
+cd /home/disk/monsoon/precip/raw/radar
+rsync -av Mosaic_3D srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar
+

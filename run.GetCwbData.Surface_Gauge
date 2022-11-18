@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get the 10M surface gauge data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform SURFACE \
+    --ftpSubDir GAUGE \
+    --localDirBase $DATA_DIR/raw/surface/gauge \
+    --fileSuffix mdf \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600 \
+
+cd $DATA_DIR/raw/surface
+rsync -av gauge srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/surface

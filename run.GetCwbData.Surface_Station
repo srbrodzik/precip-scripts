@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get the 10M and 15M surface station data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform SURFACE \
+    --ftpSubDir STATION \
+    --localDirBase $DATA_DIR/raw/surface/station \
+    --fileSuffix mdf \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600 \
+
+cd $DATA_DIR/raw/surface
+rsync -av station srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/surface

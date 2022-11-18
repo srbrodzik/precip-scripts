@@ -1,0 +1,20 @@
+#!/bin/csh
+
+# get satellite data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform SAT \
+    --localDirBase $DATA_DIR/raw/satellite/himawari_cwb \
+    --fileSuffix gz \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 7200 
+
+cd /home/disk/monsoon/precip/raw/satellite
+rsync -av himawari_cwb srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/satellite
+

@@ -1,0 +1,18 @@
+#!/bin/csh
+
+# get the 10M and 15M surface station data
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform SURFACE \
+    --ftpSubDir STATION \
+    --localDirBase $DATA_DIR/raw/surface/station \
+    --fileSuffix mdf \
+    --start "2022 05 25 00 00 00" \
+    --end "2022 06 24 00 00 00" \
+    --sleepSecs 60
+    

@@ -1,0 +1,22 @@
+#!/bin/csh
+
+#get RCMK radar data
+
+source /home/disk/meso-home/brodzik/.cshrc
+
+setenv DATA_DIR /home/disk/monsoon/precip
+
+cd $DATA_DIR/bin
+
+GetCwbData.py3 \
+    --verbose \
+    --platform RADAR \
+    --ftpSubDir RCMK/ROCAF_CDD.vol \
+    --localDirBase $DATA_DIR/raw/radar/rcmk \
+    --fileSuffix vol \
+    --realtime \
+    --runOnce \
+    --lookbackSecs 3600 
+
+cd /home/disk/monsoon/precip/raw/radar
+rsync -av rcmk srbrodzik@maui.atmos.colostate.edu:/bell-scratch2/precip/DATA/raw/radar

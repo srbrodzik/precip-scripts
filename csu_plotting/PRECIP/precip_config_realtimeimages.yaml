@@ -1,0 +1,232 @@
+# This is where this file and the other python files are located, this shouldn't have to change during the cruise
+# *** I'm pretty sure this isn't needed anymore, as each individual script knows where it is ***
+base_path: /data3/bdolan/PRECIP/
+
+
+# This is here because Vaisala wasn't doing range corrections, ** but for RHIs only ***
+# If this issue gets fixed, then change the flag to 0
+rhi_range_correction: 1
+# This qc_flag is to turn on/off some preliminary QC operations like data cleanup, and some add'l processing
+# like computing the actual correlation coefficient, because the one Vaisala provides is exaggerated
+qc_flag: 1
+# This flag gives you the option to do some preliminary velocity unfolding in realtime
+unfold_flag: 0
+
+# will do some second trip filtering in qc_radar.py, currently based on the SQI/NCP variable
+second_trip_flag: 1
+# If you want to plot the second trip output as a diagnostic or something
+plot_second_trip: 1
+
+# You have the option to choose the rainfall algorithm you'd like here
+# there are 2 options just from CSU-radartools and the csu tropical is a separate code
+# options here: csutropical, csuhidro, csublended
+rainmethod: csublended
+
+# can be either slant or composite
+rain_beam_method: composite 
+
+# these are the vertical levels
+z_val: 2.0
+z_bot: 0.5
+z_top: 3.0
+
+ppi_elev_plot: True
+# Here is where the C/S is done at
+cs_z_val: 2.0
+
+# this is if you want to plot the PPIs and CAPPIs on top of a map
+map_flag: 0
+
+# This will run the attenuation correction code in qc_radar.py (1 yes, 0 no)
+att_corr: 1
+
+# this will run the differential attenuation correction if turned on (1 yes, 0 no)
+diff_att_corr: 1
+
+# This is needed for HID and rainfall stuff
+radar_band: 'C'
+
+pause_time: 15 # in seconds, number of seconds the driver script will pause while waiting for a new data file
+file_tdiff_thresh: 480 # In the driver, this is the  number of seconds the directory will look back
+                        # Since it wont overwrite times/files it's already processed, it makes sense to make
+                        # This a fairly large number
+
+#fig_path: /shares/radar_data/projects/spurs2/figures
+#raw_data_path: /shares/radar_data/projects/spurs2/
+
+# ***************************************************************
+# These 2 paths are very important! Make sure these are pointing to a real and correct path
+#
+
+#raw_data_path: /shares/radar_data/projects/test
+#fig_path: /shares/radar_data/projects/test/figures
+
+# Point this to where the raw radar data is sitting. There also should be %Y%m%d subdirectories
+# after raw_data_path, otherwise the qc_radar.py code will need some updating
+raw_data_path: /data3/bdolan/PRECIP/
+# specifying where you want the generated figures to be stored. They will also be in subdirectories
+# which will be made as needed. First, the type of figure (e.g. raw_ppi), then the date (e.g. 20181101)
+fig_path: //data3/bdolan/PRECIP/figures/
+# This is the filetype (suffix) of the raw data. Since SIGMET doesn't give one, just put an empty string
+# but in theory, it could be an nc or uf or something like that
+raw_ftype: ''
+
+# This is the path where the raw data is read in and QC'ed and spit out to
+qc_data_path: /data3/bdolan/PRECIP/realtime_cfradial
+qc_ftype: .nc
+# The prefix is thrown in there for clarity
+qc_prefix: SEA
+
+# After PPI data is QC'ed, it gets gridded, this path tells the code where to put the data and where to read
+# it down the line
+grid_data_path: /data3/bdolan/PRECIP/realtime_gridded
+# This will likely stay as an nc, easiest to deal with
+grid_ftype: .nc
+grid_prefix: SEAPOL_grid_
+
+# This path is where the npz rainfall arrays are located and stored for future use
+rain_data_path: /data3/bdolan/PRECIP/rainfall_arrays
+# The file type should probably stay as a npz file. This gives flexibility (at least in python)
+# and takes up a smaller amount of space. We also have ways to convert other data types
+# for shipping data
+rain_ftype: .npz
+# This goes in front of the filename
+rain_prefix : ''
+
+# this is a switch if you want to output gridded/processed data to a netcdf file (1 yes, 0 no)
+# this code is run at the end of process_gridded_radar.py. Did it this way because all of the 
+# requisite info is already calculated in this script
+output_nc: 1
+# Where do you want to put the output netcdf files?
+nc_path: /data3/bdolan/PRECIP/processed_nc
+# The variables (or fields) you want to output
+nc_fields: ['DZQC', 'CS']
+# this just goes in front of the filename for organizational/documentation purposes
+nc_prefix: 'SEA'
+
+
+# The path to put the downsampled data, to be sent over the internet
+downsample_path: /data3/bdolan/PRECIP/realtime_downsampled
+
+# These are the low and high specified phase values for plotting, will change for each radar
+low_phase: 60
+high_phase: 150
+
+# These specify the DPI values of the figures generated, can turn down or up
+# will have implications for image quality and file size
+# For example: 6 panel PPI plot at 120 DPI is 330 kB, while at 72 DPI it's 157 kB
+# Going to leave at 100 for now, seems like a good compromise
+# But might need to turn it down if internet is bad, or turn it up if viewing on a large screen
+
+DPI: 100
+largeDPI: 200
+
+# This is the minimum number of sweeps that a PPI scan needs to consider a radar volume as valid
+# for processing in the pipeline. This should filter out any corrupt scans or surveillance scans
+nsweeps_thresh: 3
+
+# ************ Down here is the naming of fields, these are used in each script to identify what
+# ************ each field is called. These can (and may have to) be changed depending on what the 
+# ************ fields are named coming out of the radar.
+
+# The easiest way to plot things in the pyart framework is to add it to the radar object
+# and use the built in functions, this removes some fields so they're not saved and 
+# carried along, as that will fill up disk space quite quickly
+qc_remove_fields: ['DZQCSMOOTH', 'SQISMOOTH', 'WIDTHSMOOTH', 'STF', 'DZQCI', 'DBT2']
+
+
+# This is the name of the reflectivity field in the raw data file
+orig_dz_name: DBZ2
+# Here is the Pyart QC'ed reflectivity name, this is made by choice
+qc_dz_name: DZQC
+# Here is the final reflectivity name. This is the final field name and allows for more
+# updating of the name, if some other processing (like DROPS) is being done.
+dz_name: DZQCC
+
+
+# Spectral width
+orig_width_name: WIDTH2
+
+
+# Differential phase
+orig_phase_name: PHIDP2
+qc_phase_name: PHIDP2
+phase_name: FDP
+
+# Doppler velocity
+orig_vel_name: VEL2
+qc_vel_name: VEL2
+#vel_name: CV
+vel_name: VEL2
+
+# Signal quality, sometimes also called normalized coherent power
+orig_sq_name: SQI2
+qc_vel_name: SQI2
+sq_name: SQI2
+
+
+# differential reflectivity (dB)
+orig_zdr_name: ZDR2
+qc_zdr_name: ZDR2
+zdr_name: ZDRC
+
+# specific differential phase
+orig_kdp_name: KDP2
+qc_kdp_name: KDP
+kdp_name: KDP
+
+# correlation coefficient
+orig_rho_name: RHOHV2
+qc_rho_name: CC
+rho_name: CC
+
+
+orig_sn_name: SNR16
+qc_sn_name: SN
+sn_name: SN
+
+
+
+# Down here are some initial thresholding criteria
+
+sdp_thresh: 13
+despeckle_gates: 4
+
+sn_thresh: 5.7
+
+# These are signal quality thresholds that you might need to tune.
+# Initially, they were SQI: 0.35, and rho: 0.85. 
+# Depending on the radar quality, those might be pretty strict
+sq_thresh: 0.35
+rho_thresh: 0.85
+
+#######################################################
+
+lat_width: 2.25
+lon_width: 2.5
+
+lat_width_zoom: 1.0
+lon_width_zoom: 1.0
+
+map_limits:
+  lat: [17.5, 26.0]
+  lon: [-123.0, -116.0]
+
+map_res: 1.0
+
+
+
+saved_data_path: saved_data
+default_dtime: 5.0
+accum_lag_thresh: 20.0
+
+rain_search_range: 5.0
+rain_search_thresh: 5.0
+
+accum_search_range: 5.0
+accum_search_thresh: 5.0
+
+rainfall_age_thresh: 480.0
+save_data_thresh: 12
+
+
